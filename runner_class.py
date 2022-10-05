@@ -1,4 +1,3 @@
-from pickle import TRUE
 from random import randint, choice
 from overworld import Overworld
 from level import Level
@@ -10,11 +9,11 @@ from sys import exit
 
 class Game:
     def __init__(self):
-        self.max_level = 5
+        self.max_level = 0
         # Game Class -> Method to create the overworld -> level
         # Game Class -> Methos to create level -> overworld
         self.overworld = Overworld(
-            1, self.max_level, screen, self.create_level)
+            0, self.max_level, screen, self.create_level)
         self.status = 'overworld'
         #self.level = Level(3,screen)
 
