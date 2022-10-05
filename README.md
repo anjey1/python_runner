@@ -1,2 +1,2 @@
 # python_runner
-Python Runner Game
+python3 runner_class.py
