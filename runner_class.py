@@ -240,7 +240,7 @@ def powerup_collision():
     # sprite, group, dokill = kill group sprite on colission, collided = None
     if pygame.sprite.spritecollide(player.sprite, powerup_group, True):
         powerup_group.empty()
-        return TRUE
+        return True
     else:
         return False
 # Setup
