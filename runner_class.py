@@ -17,9 +17,9 @@ from functions import display_score, display_lives, collision_sprites, collision
 
 pygame.init()
 
-bg_music = pygame.mixer.Sound('audio/music.wav')
-bg_music.set_volume(0.1)
-bg_music.play(loops = -1) # Infinite loops
+#bg_music = pygame.mixer.Sound('audio/music.wav')
+#bg_music.set_volume(0.1)
+#bg_music.play(loops = -1) # Infinite loops
 
 # State
 start_time = 0
@@ -32,6 +32,8 @@ powerup_cooldown = 3000
 fired_last = 0
 weapon_cooldown = 1500
 lives = 5
+levelCycle = 5000
+boss_mode = False
 
 #Surface Setup
 screen = pygame.display.set_mode((800,400))
@@ -60,12 +62,18 @@ background_group = pygame.sprite.Group()
 #Weapons
 weapons_group = pygame.sprite.Group()
 
+#Boss Weapons
+weapons_boss_group = pygame.sprite.Group()
+
 #Timers
 obstacle_timer = pygame.USEREVENT +1
 pygame.time.set_timer(obstacle_timer, 1500) #Rewspawn Speed
 
 powerup_timer = pygame.USEREVENT +2
 pygame.time.set_timer(powerup_timer, 10000) # Animation Speed
+
+boss_fire = pygame.USEREVENT +3
+pygame.time.set_timer(boss_fire, 3000) # Animation Speed
 # 800 pixel - 60*4 - 240 pixel per second - 3.3 second
 
 # fly_animation_timer = pygame.USEREVENT +3
@@ -105,6 +113,24 @@ while True:
             # if event.type == back_animation_timer: # Draw/Spawn Background
             #     background_group.add(Background(choice(['tree','waterfall','tree'])))                
             
+            
+            if levelCycle - pygame.time.get_ticks() < 0 & boss_mode == False :  # level end
+
+                if not boss_mode :
+                    obstacle_group.empty()
+                    powerup_group.empty() 
+                    pygame.time.set_timer(obstacle_timer, 0)        
+                    pygame.time.set_timer(powerup_timer, 0)
+                    print('Boss MODE');
+                    obstacle_group.add(Obstacle('boss')) 
+                                
+
+                boss_mode = True
+                #Boss True
+                if event.type == boss_fire: # Draw/Spawn Enemies
+                    weapons_boss_group.add(Weapon('fireball',obstacle_group.sprites()[0].rect.y + 100))
+                    print('boss_fired')
+
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
                 game_active = True
                 start_time = pygame.time.get_ticks()
@@ -139,7 +165,11 @@ while True:
         weapons_group.draw(screen)
         weapons_group.update(weapons_group, obstacle_group)
 
+        weapons_boss_group.draw(screen)
+        weapons_boss_group.update(weapons_boss_group, player)
         
+        
+
         # Powerup
         powerup_group.draw(screen)
         powerup_group.update()
