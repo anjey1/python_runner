@@ -1,8 +1,11 @@
 from random import randint, choice
 from overworld import Overworld
-from level import Level
 import pygame
 from sys import exit
+
+
+from level import Level_Single
+from settings import *
 
 # Classes
 
@@ -36,7 +39,6 @@ class Game:
             self.overworld.run()
         else:
             self.level.run()
-
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -89,7 +91,6 @@ class Player(pygame.sprite.Sprite):
         if not game_active:
             self.rect.bottom = 300
 
-
 class Obstacle(pygame.sprite.Sprite):
     def __init__(self, type):
         super().__init__()
@@ -126,7 +127,6 @@ class Obstacle(pygame.sprite.Sprite):
         if self.rect.x <= -10:
             self.kill()
 
-
 class Background(pygame.sprite.Sprite):
     def __init__(self, type='tree'):
         super().__init__()
@@ -146,7 +146,6 @@ class Background(pygame.sprite.Sprite):
     def destroy(self):
         if self.rect.x <= 0:
             self.kill()
-
 
 class Weapon(pygame.sprite.Sprite):
     def __init__(self, type='axe', weapon_init_y=300):
@@ -178,7 +177,6 @@ class Weapon(pygame.sprite.Sprite):
         if pygame.sprite.groupcollide(weapons_group, obstacle_group, True, True):
             print('Group Colided !!!!')
             self.kill()
-
 
 class PowerUp(pygame.sprite.Sprite):
     def __init__(self, type):
@@ -217,7 +215,6 @@ class PowerUp(pygame.sprite.Sprite):
 
 # Functions
 
-
 def display_score():
     current_time = pygame.time.get_ticks() - start_time
     # text(string), antialias(true ,false - for pixelart), color #
@@ -226,7 +223,6 @@ def display_score():
     screen.blit(score_surf, score_rect)
     return current_time
 
-
 def collision_sprites():
     # sprite, group, dokill = kill group sprite on colission, collided = None
     if pygame.sprite.spritecollide(player.sprite, obstacle_group, False, collided=None):
@@ -234,7 +230,6 @@ def collision_sprites():
         return False
     else:
         return True
-
 
 def powerup_collision():
     # sprite, group, dokill = kill group sprite on colission, collided = None
@@ -253,13 +248,18 @@ pygame.init()
 
 # Surface Setup
 
-screen = pygame.display.set_mode((800, 400))
+# screen = pygame.display.set_mode((800, 400))
+
+#Single Level Screen
+screen = pygame.display.set_mode((1200, 640))
+
 pygame.display.set_caption('Runner')
 
 clock = pygame.time.Clock()
 start_time = 0
 score = 0
 game = Game()
+level = Level_Single(level_map, screen)
 game_speed = 1
 
 
@@ -290,6 +290,9 @@ weapons_group = pygame.sprite.Group()
 
 # Powerup
 powerup_group = pygame.sprite.Group()
+
+# Tiles
+# tiles_group = pygame.sprite.Group(Tile((100, 100), 200))
 
 # Timers
 obstacle_timer = pygame.USEREVENT + 1
@@ -424,7 +427,9 @@ while True:
             end_rect2 = end_surf.get_rect(center=(370, 50))
             screen.blit(end_surf, end_rect)
             screen.blit(end_surf2, end_rect2)
-            game.run()
+            # game.run()
+            # tiles_group.draw(screen)
+            level.run()
 
     pygame.display.update()
     clock.tick(60)  # this loop will run 60 time a second
