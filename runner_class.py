@@ -9,6 +9,8 @@ from player import Player
 from obstacle import Obstacle   
 from weapons import Weapon
 from power_up import PowerUp
+from weapons_boss import Weapon_Boss
+
 
 # Functions
 
@@ -62,6 +64,8 @@ background_group = pygame.sprite.Group()
 #Weapons
 weapons_group = pygame.sprite.Group()
 
+
+# [Sprite,Sprite,Sprite]
 #Boss Weapons
 weapons_boss_group = pygame.sprite.Group()
 
@@ -128,7 +132,7 @@ while True:
                 boss_mode = True
                 #Boss True
                 if event.type == boss_fire: # Draw/Spawn Enemies
-                    weapons_boss_group.add(Weapon('fireball',obstacle_group.sprites()[0].rect.y + 100))
+                    weapons_boss_group.add(Weapon_Boss('fireball',obstacle_group.sprites()[0].rect))
                     print('boss_fired')
 
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
@@ -176,7 +180,7 @@ while True:
         
 
         #Collision
-        if not collision_sprites(player, obstacle_group):
+        if not collision_sprites(player, obstacle_group, weapons_boss_group):
              print('Colided')
              lives -= 1
              if(lives < 1):

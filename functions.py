@@ -15,13 +15,19 @@ def display_lives(screen, lives):
         player_life_rect = player_life.get_rect(center = (50 + i * 30, 50))
         screen.blit(player_life,player_life_rect)
 
-def collision_sprites(player, obstacle_group):
+def collision_sprites(player, obstacle_group, weapons_boss):
     
+    if pygame.sprite.spritecollide(player.sprite, weapons_boss, False, collided = None):
+        print('Weapon Group Player Collision')
+        return False
+
     if pygame.sprite.spritecollide(player.sprite, obstacle_group, False, collided = None): # sprite, group, dokill = kill group sprite on colission, collided = None
         obstacle_group.empty()
         return False
     else: 
         return True
+
+
 
 def collision_powerup(player, powerup_group):
     if pygame.sprite.spritecollide(player.sprite, powerup_group, True, collided = None): # google pygame groupcollide

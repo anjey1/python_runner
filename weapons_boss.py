@@ -3,19 +3,21 @@ import pygame
 
 
 class Weapon_Boss(pygame.sprite.Sprite):
-    def __init__(self, type = 'axe', weapon_init_y = 400):
+    def __init__(self, type = 'axe', boss = pygame.sprite.Sprite):
         super().__init__()
 
         self.weapon_group = []
         self.obstacle_group = []
+        boss_x = boss.x
+        boss_y = boss.y + 50
        
         
         if type == 'fireball':
             self.image = pygame.transform.scale(pygame.image.load('graphics/fireball.png').convert_alpha(), (60,60))
-            self.rect = self.image.get_rect(midbottom = (600,weapon_init_y))
+            self.rect = self.image.get_rect(midbottom = (boss_x, boss_y))
         else:
             self.image = pygame.transform.scale(pygame.image.load('graphics/axe.png').convert_alpha(), (60,60))
-            self.rect = self.image.get_rect(midbottom = (600,weapon_init_y))
+            self.rect = self.image.get_rect(midbottom = (boss_x, boss_y))
 
         #self.throw_sound = pygame.mixer.Sound("audio/matches.wav")
         #self.throw_sound.set_volume(0.1)  
@@ -26,14 +28,14 @@ class Weapon_Boss(pygame.sprite.Sprite):
         #     pygame.mixer.Sound.play(self.throw_sound)
 
 
-    def update(self, weapons_group, obstacle_group ):
+    def update(self, weapons_group, player ):
         self.weapons_group = weapons_group
         # self.obstacle_group = obstacle_group
         # self.weapon_input()
         self.rect.x -= 5
-        # self.destroy()
+        self.destroy(player)
 
-    def destroy(self):
-        if pygame.sprite.groupcollide(self.weapons_group, self.obstacle_group, True, True): # google pygame groupcollide
-            print('Group Colided !!!!')
+    def destroy(self, player):
+        if pygame.sprite.groupcollide(self.weapons_group, player, False, False): # google pygame groupcollide
+            print('Boss Weapon Group Colided !!!!')
             self.kill()
