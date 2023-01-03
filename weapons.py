@@ -34,14 +34,17 @@ class Weapon(pygame.sprite.Sprite):
         #
         #
 
-    def update(self, weapons_group, obstacle_group ):
+    def update(self, weapons_group, obstacle_group, boss_mode ):
         self.weapons_group = weapons_group
         self.obstacle_group = obstacle_group
         self.weapon_input()
         self.rect.x += 5
-        self.destroy()
+        self.destroy(boss_mode)
 
-    def destroy(self):
-        if pygame.sprite.groupcollide(self.weapons_group, self.obstacle_group, True, True): # google pygame groupcollide
-            print('Group Colided !!!!')
+    def destroy(self, boss_mode):
+        if boss_mode:
+            if pygame.sprite.groupcollide(self.weapons_group, self.obstacle_group, True, False):
+                print('Boss Weapon Group Colided !!!!')
+        elif pygame.sprite.groupcollide(self.weapons_group, self.obstacle_group, True, True): # google pygame groupcollide
+            print('Weapon Group Colided !!!!')
             self.kill()

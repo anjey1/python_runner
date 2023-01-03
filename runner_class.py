@@ -15,7 +15,7 @@ from weapons_boss import Weapon_Boss
 # Functions
 
 # from functions.py import function, function, function
-from functions import display_score, display_lives, collision_sprites, collision_powerup        
+from functions import display_score, display_lives, collision_sprites, collision_powerup, display_boss_lives, collision_with_boss
 
 pygame.init()
 
@@ -34,6 +34,7 @@ powerup_cooldown = 3000
 fired_last = 0
 weapon_cooldown = 1500
 lives = 5
+boss_lives = 5
 levelCycle = 5000
 boss_mode = False
 
@@ -154,6 +155,9 @@ while True:
 
         score = display_score(screen, start_time, test_font)
         display_lives(screen, lives)
+        if boss_mode:
+            display_boss_lives(screen, boss_lives)
+
 
         #Obstacle
         
@@ -167,7 +171,7 @@ while True:
 
         # Weapons
         weapons_group.draw(screen)
-        weapons_group.update(weapons_group, obstacle_group)
+        weapons_group.update(weapons_group, obstacle_group, boss_mode)
 
         weapons_boss_group.draw(screen)
         weapons_boss_group.update(weapons_boss_group, player)
@@ -180,12 +184,20 @@ while True:
         
 
         #Collision
+
+        # Collision With Player
         if not collision_sprites(player, obstacle_group, weapons_boss_group):
              print('Colided')
              lives -= 1
              if(lives < 1):
                  game_active = False
         
+        #Collision With Boss
+        if collision_with_boss(obstacle_group, weapons_group):
+             print('Boss Colided')
+             boss_lives -= 1
+             if(boss_lives < 1):
+                 game_active = False
 
         #game_active = collision_sprites() # when collision happens return FALSE
         

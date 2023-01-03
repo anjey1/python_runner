@@ -3,5 +3,5 @@ __pycache__
 .vscode
 erlier versions
 audio/music.wav
-graphics
+# graphics
 .gitignore
