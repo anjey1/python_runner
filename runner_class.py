@@ -40,6 +40,7 @@ class Game:
         else:
             self.level.run()
 
+
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -91,6 +92,7 @@ class Player(pygame.sprite.Sprite):
         if not game_active:
             self.rect.bottom = 300
 
+
 class Obstacle(pygame.sprite.Sprite):
     def __init__(self, type):
         super().__init__()
@@ -127,6 +129,7 @@ class Obstacle(pygame.sprite.Sprite):
         if self.rect.x <= -10:
             self.kill()
 
+
 class Background(pygame.sprite.Sprite):
     def __init__(self, type='tree'):
         super().__init__()
@@ -146,6 +149,7 @@ class Background(pygame.sprite.Sprite):
     def destroy(self):
         if self.rect.x <= 0:
             self.kill()
+
 
 class Weapon(pygame.sprite.Sprite):
     def __init__(self, type='axe', weapon_init_y=300):
@@ -177,6 +181,7 @@ class Weapon(pygame.sprite.Sprite):
         if pygame.sprite.groupcollide(weapons_group, obstacle_group, True, True):
             print('Group Colided !!!!')
             self.kill()
+
 
 class PowerUp(pygame.sprite.Sprite):
     def __init__(self, type):
@@ -215,6 +220,7 @@ class PowerUp(pygame.sprite.Sprite):
 
 # Functions
 
+
 def display_score():
     current_time = pygame.time.get_ticks() - start_time
     # text(string), antialias(true ,false - for pixelart), color #
@@ -223,6 +229,7 @@ def display_score():
     screen.blit(score_surf, score_rect)
     return current_time
 
+
 def collision_sprites():
     # sprite, group, dokill = kill group sprite on colission, collided = None
     if pygame.sprite.spritecollide(player.sprite, obstacle_group, False, collided=None):
@@ -230,6 +237,7 @@ def collision_sprites():
         return False
     else:
         return True
+
 
 def powerup_collision():
     # sprite, group, dokill = kill group sprite on colission, collided = None
@@ -250,7 +258,7 @@ pygame.init()
 
 # screen = pygame.display.set_mode((800, 400))
 
-#Single Level Screen
+# Single Level Screen
 screen = pygame.display.set_mode((1200, 640))
 
 pygame.display.set_caption('Runner')
@@ -388,7 +396,9 @@ while True:
                 print('power up removed !')
 
     else:
-        background_image = pygame.image.load('graphics/opening.png').convert()
+        background_image = pygame.transform.scale(pygame.image.load(
+            'graphics/opening.png').convert_alpha(), (1200, 640))
+
         screen.blit(background_image, (0, 0))
 
         if game_started:
