@@ -43,7 +43,7 @@ class Weapon(pygame.sprite.Sprite):
 
     def destroy(self, boss_mode):
         if boss_mode:
-            if pygame.sprite.groupcollide(self.weapons_group, self.obstacle_group, True, False):
+            if pygame.sprite.groupcollide(self.weapons_group, self.obstacle_group, False, False):
                 print('Boss Weapon Group Colided !!!!')
         elif pygame.sprite.groupcollide(self.weapons_group, self.obstacle_group, True, True): # google pygame groupcollide
             print('Weapon Group Colided !!!!')

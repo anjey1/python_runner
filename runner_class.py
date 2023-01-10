@@ -37,6 +37,7 @@ lives = 5
 boss_lives = 5
 levelCycle = 5000
 boss_mode = False
+game_won = False
 
 #Surface Setup
 screen = pygame.display.set_mode((800,400))
@@ -108,7 +109,7 @@ while True:
                         weapons_group.add(Weapon('axe',player.sprite.rect.y + 70))
                         fired_last = pygame.time.get_ticks() # time stamp for power up start time
 
-            if event.type == obstacle_timer: # Draw/Spawn Enemies
+            if event.type == obstacle_timer and boss_mode == False: # Draw/Spawn Enemies
                 obstacle_group.add(Obstacle(choice(['fly','fly','husk'])))
 
             if event.type == powerup_timer:
@@ -118,7 +119,8 @@ while True:
             # if event.type == back_animation_timer: # Draw/Spawn Background
             #     background_group.add(Background(choice(['tree','waterfall','tree'])))                
             
-            
+                # 5                           0
+                # 5                           25 
             if levelCycle - pygame.time.get_ticks() < 0 & boss_mode == False :  # level end
 
                 if not boss_mode :
@@ -136,8 +138,35 @@ while True:
                     weapons_boss_group.add(Weapon_Boss('fireball',obstacle_group.sprites()[0].rect))
                     print('boss_fired')
 
-        elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+        elif game_active == False and event.type == pygame.KEYDOWN and event.key == pygame.K_r:
                 game_active = True
+                start_time = 0
+                score = 0
+                game_speed = 1
+                player_gravity = 20
+                mode = False
+                powerup_taken_last = 0
+                powerup_cooldown = 3000
+                fired_last = 0
+                weapon_cooldown = 1500
+                lives = 5
+                boss_lives = 5
+                # 5000 + 25000
+                levelCycle = 5000 + pygame.time.get_ticks()
+                boss_mode = False
+
+                obstacle_group.empty()
+                powerup_group.empty()
+                weapons_group.empty()
+                weapons_boss_group.empty()
+
+                pygame.time.set_timer(boss_fire, 0)
+                pygame.time.set_timer(boss_fire, 3000)
+                pygame.time.set_timer(powerup_timer, 0)
+                pygame.time.set_timer(powerup_timer, 10000)
+                pygame.time.set_timer(obstacle_timer, 0)
+                pygame.time.set_timer(obstacle_timer, 1500)
+
                 start_time = pygame.time.get_ticks()
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_e:
                 pygame.quit()
@@ -198,6 +227,7 @@ while True:
              boss_lives -= 1
              if(boss_lives < 1):
                  game_active = False
+                 game_won = True
 
         #game_active = collision_sprites() # when collision happens return FALSE
         
@@ -222,10 +252,19 @@ while True:
         #Reset On Game Over
         screen.fill((200,150,20))
         
+        
+
+        if game_won:
+            screen.fill((227, 136, 145))
+            end_surf = test_font.render('Game Won Congrats !! Whoo', True, (70,70,70,255))
+            player_zoom = pygame.transform.rotozoom(pygame.image.load('graphics/snail/snail1.png').convert_alpha(), 0, 2)
+        else:
+            screen.fill((200,150,20))
+            player_zoom = pygame.transform.rotozoom(pygame.image.load('graphics/Player/jump.png').convert_alpha(), 0, 2)
+            end_surf = test_font.render('Game Over', True, (70,70,70,255))
+
         score_end_surf = test_font.render(f'Your Score - {score}', False, (70,70,70,255))
-        end_surf = test_font.render('Game Over', True, (70,70,70,255))
         end_surf2 = test_font.render('Press R - To Restart | Press E - To Exit', True, (70,70,70,255))
-        player_zoom = pygame.transform.rotozoom(pygame.image.load('graphics/Player/jump.png').convert_alpha(), 0, 2)
 
         end_rect = end_surf.get_rect(center = (400, 50))
         end_rect2 = end_surf.get_rect(center = (225, 350))
