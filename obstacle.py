@@ -1,6 +1,7 @@
 
 import pygame
 from random import randint
+from functions import clip
 
 class Obstacle(pygame.sprite.Sprite):
     def __init__(self, type): # ['fly','fly','snail']
@@ -23,9 +24,18 @@ class Obstacle(pygame.sprite.Sprite):
             self.type = type
 
         elif type == 'boss':
-            boss = pygame.transform.scale(pygame.image.load('graphics/Boss1/BrokenVessel1.PNG').convert_alpha(),(70,70))
-            boss_2 = pygame.transform.scale(pygame.image.load('graphics/Boss1/BrokenVessel2.PNG').convert_alpha(),(70,70))
-            self.frames = [boss,boss_2]
+            bossWalkLeft = pygame.image.load('graphics/Boss1/BrokenVessel3.PNG').convert_alpha()
+            bossWalkLeft_1 = pygame.transform.scale(clip(bossWalkLeft, 0, 0, 166, 113),(200,100))
+            bossWalkLeft_2 = pygame.transform.scale(clip(bossWalkLeft, 166, 0, 166, 113),(200,100))
+            bossWalkLeft_3 = pygame.transform.scale(clip(bossWalkLeft, 342, 0, 166, 113),(200,100))
+            bossWalkLeft_4 = pygame.transform.scale(clip(bossWalkLeft, 508, 0, 166, 113),(200,100))
+            bossWalkLeft_5 = pygame.transform.scale(clip(bossWalkLeft, 674, 0, 166, 113),(200,100))
+            bossWalkLeft_6 = pygame.transform.scale(clip(bossWalkLeft, 840, 0, 166, 113),(200,100))
+            bossWalkLeft_7 = pygame.transform.scale(clip(bossWalkLeft, 1006, 0, 166, 113),(200,100))
+
+
+            self.frames = [bossWalkLeft_1,bossWalkLeft_2,bossWalkLeft_3,bossWalkLeft_4,bossWalkLeft_5,bossWalkLeft_6,bossWalkLeft_7]
+
             y_pos = 300
             self.x_speed = 2
             self.type = type

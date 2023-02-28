@@ -21,6 +21,11 @@ def display_boss_lives(screen, lives):
         boss_life_rect = boss_life.get_rect(center = (550 + i * 30, 50))
         screen.blit(boss_life,boss_life_rect)
 
+def display_level(screen, currentLevel, test_font):
+    level_surf = test_font.render(f'Level - {currentLevel}', False, (70,70,70,255))
+    level_rect = level_surf.get_rect(center = (400, 20))
+    screen.blit(level_surf,level_rect)
+
 def collision_sprites(player, obstacle_group, weapons_boss):
     
     # Boss Weapon Collision
@@ -45,3 +50,10 @@ def collision_powerup(player, powerup_group):
     if pygame.sprite.spritecollide(player.sprite, powerup_group, True, collided = None): # google pygame groupcollide
         return True
     return False
+
+def clip(surface, x, y, x_size, y_size): #Get a part of the image
+    handle_surface = surface.copy() #Sprite that will get process later
+    clipRect = pygame.Rect(x,y,x_size,y_size) #Part of the image
+    handle_surface.set_clip(clipRect) #Clip or you can call cropped
+    image = surface.subsurface(handle_surface.get_clip()) #Get subsurface
+    return image.copy() #Return
