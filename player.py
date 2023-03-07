@@ -5,7 +5,10 @@ from support import import_folder
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos) -> None:
         super().__init__()
-        # self.import_character_assets()
+        self.import_character_assets()
+        self.frame_index = 0
+        self.animation_speed = 0.15
+        self.image = self.animations['idle'][self.frame_index]
         self.image = pygame.image.load(
             'graphics/boss/soldier_2.png').convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
@@ -24,12 +27,15 @@ class Player(pygame.sprite.Sprite):
             full_path = character_path + animation
             self.animations[animation] = import_folder(full_path)
 
-    def clip(surface, x, y, x_size, y_size):  # Get a part of the image
-        handle_surface = surface.copy()  # Sprite that will get process later
-        clipRect = pygame.Rect(x, y, x_size, y_size)  # Part of the image
-        handle_surface.set_clip(clipRect)  # Clip or you can call cropped
-        image = surface.subsurface(handle_surface.get_clip())  # Get subsurface
-        return image.copy()  # Return
+    def animate(self):
+        animation = self.animations['run']
+        # loop over frame index - reset 0 on last image
+        self.frame_index += self.animation_speed
+        if (self.frame_index >= len(animation)):
+            self.frame_index = 0
+
+        # frame_index is double type should convert to int
+        self.image = animation[int(self.frame_index)]
 
     def apply_gravity(self):
         self.direction.y += self.gravity
@@ -53,3 +59,4 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         self.get_input()
+        self.animate()

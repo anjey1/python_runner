@@ -46,11 +46,11 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
 
         player_walk_1 = pygame.image.load(
-            'graphics/Player/player_walk_1.png').convert_alpha()
+            'Assets/Player/player_walk_1.png').convert_alpha()
         player_walk_2 = pygame.image.load(
-            'graphics/Player/player_walk_2.png').convert_alpha()
+            'Assets/Player/player_walk_2.png').convert_alpha()
         self.player_jump = pygame.image.load(
-            'graphics/Player/jump.png').convert_alpha()
+            'Assets/Player/jump.png').convert_alpha()
         self.player_walk = [player_walk_1, player_walk_2]
         self.player_animation_index = 0
 
@@ -273,8 +273,8 @@ game_speed = 1
 
 # Draw
 
-sky_surf = pygame.image.load('graphics/Sky.png').convert()
-ground_surf = pygame.image.load('graphics/ground.png').convert()
+sky_surf = pygame.image.load('Assets/Sky.png').convert()
+ground_surf = pygame.image.load('Assets/ground.png').convert()
 
 test_font = pygame.font.Font('font/Pixeltype.ttf', 50)
 game_active = False

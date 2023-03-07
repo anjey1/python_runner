@@ -96,7 +96,7 @@ class Level_Single:
         # Collision Engine
         for sprite in self.tiles_group.sprites():
             if sprite.rect.colliderect(player.rect):
-                if player.direction.y > 0:  # Moving Down when gravity is Vector(0,0.8) |0 -> 400|
+                if player.direction.y > 0:  # Moving Down when gravity is Vector(0,0.8) |top - 0 -> 400 - bottom|
                     player.rect.bottom = sprite.rect.top
                     player.direction.y = 0  # Cancel Gravity
                 elif player.direction.y < 0:  # Moving Up
